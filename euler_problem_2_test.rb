@@ -20,10 +20,7 @@ class EvenFibonacciNumbers
       prev_result = 1
       sum = 0
 
-      return 0 if limit == 0
-      return 1 if limit == 1
-
-      (2..limit).each do |number|
+      (0..limit).each do |number|
         result = prev_result + prev_prev_result
         prev_prev_result = prev_result
         prev_result = result
