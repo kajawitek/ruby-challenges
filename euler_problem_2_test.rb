@@ -16,8 +16,6 @@ end
 
 class EvenFibonacciNumbers
   def sum_of_even_fibonacci_numbers_below(limit)
-      result = 0
-
       prev_prev_result = 0
       prev_result = 1
       sum = 0
@@ -25,7 +23,7 @@ class EvenFibonacciNumbers
       return 0 if limit == 0
       return 1 if limit == 1
 
-      (2..limit).each_with_index do |number, index|
+      (2..limit).each do |number|
         result = prev_result + prev_prev_result
         prev_prev_result = prev_result
         prev_result = result
