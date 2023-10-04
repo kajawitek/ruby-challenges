@@ -41,13 +41,6 @@ class PrimeNumber
     numbers[n-1]
   end
 
-  def is_prime?(number)
-    (2...Math.sqrt(number)).each do |index|
-      return false if (number % index).zero?
-    end
-    true
-  end
-
   def estimated_nth_prime(n)
     n * Math.log(n) + n * Math.log(Math.log(n)).ceil
   end
