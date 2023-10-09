@@ -10,14 +10,28 @@
 require 'minitest/autorun'
 
 class GridProductTest < Minitest::Test
-  SAMPLE_GRID = [[8, 02, 22, 97],
+  SAMPLE_GRID = [[8, 2, 22, 97],
                 [49, 49, 99, 40],
                 [81, 49, 31, 73],
                 [52, 70, 95, 23]]
 
   def test_greatest_product_of_4_adjacent_numbers_in_sample_grid
-    skip
-    assert_equal 70600674, GridProduct.new.greatest_product_in_grid(SAMPLE_GRID)
+    # skip
+    assert_equal 24_468_444, GridProduct.new.greatest_product_in_grid(SAMPLE_GRID)
+  end
+
+  SAMPLE_GRID_2 = [[8, 2, 22, 97, 38, 15, 0, 40],
+                   [49, 49, 99, 40, 17, 81, 18, 57],
+                   [81, 49, 31, 73, 55, 79, 14, 29],
+                   [52, 70, 95, 23, 4, 60, 11, 42],
+                   [22, 31, 16, 71, 51, 67, 63, 89],
+                   [24, 47, 32, 60, 99, 3, 45, 2],
+                   [32, 98, 81, 28, 64, 23, 67, 10],
+                   [67, 26, 20, 68, 2, 62, 12, 20]]
+
+  def test_greatest_product_of_4_adjacent_numbers_in_sample_grid_2
+    # skip
+    assert_equal 32719995, GridProduct.new.greatest_product_in_grid(SAMPLE_GRID_2)
   end
 
   ACTUAL_GRID = [[8, 2, 22, 97, 38, 15, 0, 40, 0, 75, 4, 5, 7, 78, 52, 12, 50, 77, 91, 8],
@@ -43,12 +57,72 @@ class GridProductTest < Minitest::Test
 
   def test_greatest_product_of_4_adjacent_numbers_in_actual_grid
     # skip
-    assert_equal 0, GridProduct.new.greatest_product_in_grid(ACTUAL_GRID)
+    assert_equal 70600674, GridProduct.new.greatest_product_in_grid(ACTUAL_GRID)
   end
 end
 
 class GridProduct
-  def greatest_product_in_grid(grid)
+  def get_product_rows(x, y, grid)
+    return 0 if x > grid.length - 4 || y > grid.length - 4
+    product = 1
+    4.times do
+      product *= grid[x][y]
+      y += 1
+    end
+    product
+  end
 
+  def get_product_columns(x, y, grid)
+    return 0 if x > grid.length - 4 || y > grid.length - 4
+
+    product = 1
+    4.times do
+      product *= grid[x][y]
+      x += 1
+    end
+    product
+  end
+
+  def get_product_diagonal_left(x, y, grid)
+    return 0 if x > grid.length - 4 || y > grid.length - 4
+
+    product = 1
+    4.times do
+      product *= grid[x][y]
+      x += 1
+      y += 1
+    end
+    product
+  end
+
+  def get_product_diagonal_right(x, y, grid)
+    return 0 if x < 3 || y > grid.length - 4
+
+    product = 1
+    4.times do
+      product *= grid[x][y]
+      x -= 1
+      y += 1
+    end
+    product
+  end
+
+  def greatest_product_in_grid(grid)
+    max_product = 0
+
+    (0..grid.length-4).each do |x|
+      (0..grid.length-4).each do |y|
+        max_product = [max_product, get_product_rows(x, y, grid)].max
+        max_product = [max_product, get_product_columns(x, y, grid)].max
+        max_product = [max_product, get_product_diagonal_left(x, y, grid)].max
+      end
+    end
+
+    (3..grid.length-1).each do |x|
+      (0..grid.length-4).each do |y|
+        max_product = [max_product, get_product_diagonal_right(x, y, grid)].max
+      end
+    end
+    max_product
   end
 end
