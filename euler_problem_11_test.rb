@@ -62,6 +62,25 @@ class GridProductTest < Minitest::Test
 end
 
 class GridProduct
+  def greatest_product_in_grid(grid)
+    max_product = 0
+
+    (0..grid.length-4).each do |x|
+      (0..grid.length-4).each do |y|
+        max_product = [max_product, get_product_rows(x, y, grid)].max
+        max_product = [max_product, get_product_columns(x, y, grid)].max
+        max_product = [max_product, get_product_diagonal_left(x, y, grid)].max
+      end
+    end
+
+    (3..grid.length-1).each do |x|
+      (0..grid.length-4).each do |y|
+        max_product = [max_product, get_product_diagonal_right(x, y, grid)].max
+      end
+    end
+    max_product
+  end
+
   def get_product_rows(x, y, grid)
     return 0 if x > grid.length - 4 || y > grid.length - 4
     product = 1
@@ -105,24 +124,5 @@ class GridProduct
       y += 1
     end
     product
-  end
-
-  def greatest_product_in_grid(grid)
-    max_product = 0
-
-    (0..grid.length-4).each do |x|
-      (0..grid.length-4).each do |y|
-        max_product = [max_product, get_product_rows(x, y, grid)].max
-        max_product = [max_product, get_product_columns(x, y, grid)].max
-        max_product = [max_product, get_product_diagonal_left(x, y, grid)].max
-      end
-    end
-
-    (3..grid.length-1).each do |x|
-      (0..grid.length-4).each do |y|
-        max_product = [max_product, get_product_diagonal_right(x, y, grid)].max
-      end
-    end
-    max_product
   end
 end
